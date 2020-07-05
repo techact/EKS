@@ -705,4 +705,41 @@ NAME             HOSTS                    ADDRESS                               
 venapi-ingress   venapi.example.com   2442-venapi-venapiingr-3fgff4234-424gdgtyfgggg.us-west-2.elb.amazonaws.com   80      31m
 ```
 
+Now we can access our application through https://venapi.example.com
+
+Check application access log
+```bash
+> ~/managed-k8s-cluster# kubectl get pods -n venapi
+```
+```console
+NAME                                READY   STATUS    RESTARTS   AGE
+venapi-deployment-9dc68ccb4-l5tmf   1/1     Running   0          163m
+venapi-deployment-9dc68ccb4-rmnjr   1/1     Running   0          163m
+venapi-deployment-9dc68ccb4-sjpck   1/1     Running   0          163m
+```
+Checking logs for single pod
+```bash
+> ~/managed-k8s-cluster# kubectl logs -f venapi-deployment-9dc68ccb4-l5tmf -n venapi
+```
+```console
+10.0.1.120 - - [05/Jul/2020:13:48:53 +0000] "GET / HTTP/1.1" 200 612 "-" "ELB-HealthChecker/2.0" "-"
+10.0.2.125 - - [05/Jul/2020:13:48:59 +0000] "GET / HTTP/1.1" 200 612 "-" "ELB-HealthChecker/2.0" "-"
+10.0.2.125 - - [05/Jul/2020:13:49:07 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:75.0) Gecko/20100101 Firefox/75.0" "106.203.56.16"
+10.0.1.120 - - [05/Jul/2020:13:49:08 +0000] "GET / HTTP/1.1" 200 612 "-" "ELB-HealthChecker/2.0" "-"
+10.0.2.125 - - [05/Jul/2020:13:49:14 +0000] "GET / HTTP/1.1" 200 612 "-" "ELB-HealthChecker/2.0" "-"
+10.0.1.120 - - [05/Jul/2020:13:49:23 +0000] "GET / HTTP/1.1" 200 612 "-" "ELB-HealthChecker/2.0" "-"
+10.0.2.125 - - [05/Jul/2020:13:49:23 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:75.0) Gecko/20100101 Firefox/75.0" "106.203.56.16"
+```
+checking logs for across all pods - deployment level
+```bash
+> ~/managed-k8s-cluster# kubectl logs -f deployment/venapi-deployment --all-containers=true -n venapi
+```
+```console
+10.0.2.125 - - [05/Jul/2020:13:48:59 +0000] "GET / HTTP/1.1" 200 612 "-" "ELB-HealthChecker/2.0" "-"
+10.0.2.125 - - [05/Jul/2020:13:49:07 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:75.0) Gecko/20100101 Firefox/75.0" "106.203.56.16"
+10.0.1.120 - - [05/Jul/2020:13:49:08 +0000] "GET / HTTP/1.1" 200 612 "-" "ELB-HealthChecker/2.0" "-"
+10.0.2.125 - - [05/Jul/2020:13:49:14 +0000] "GET / HTTP/1.1" 200 612 "-" "ELB-HealthChecker/2.0" "-"
+10.0.1.120 - - [05/Jul/2020:13:49:23 +0000] "GET / HTTP/1.1" 200 612 "-" "ELB-HealthChecker/2.0" "-"
+10.0.2.125 - - [05/Jul/2020:13:49:23 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:75.0) Gecko/20100101 Firefox/75.0" "106.203.56.16"
+```
 
