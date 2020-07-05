@@ -332,3 +332,170 @@ Session Affinity:         None
 External Traffic Policy:  Cluster
 Events:                   <none>
 ```
+```bash
+> ~/managed-k8s-cluster# cat venapi-deployment.yaml
+```
+```console
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: venapi-deployment
+  namespace: venapi
+spec:
+  selector:
+    matchLabels:
+      app: venapi
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: venapi
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - image: nginx:latest
+        imagePullPolicy: Always
+        name: nginx
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "300m"
+          limits:
+            memory: "100Mi"
+            cpu: "300m"
+```
+```bash
+> ~/managed-k8s-cluster# kubectl apply -f venapi-deployment.yaml 
+```
+```console
+deployment.apps/venapi-deployment created
+```
+```bash
+~/managed-k8s-cluster# kubectl get deployments -n venapi
+```
+```console
+NAME                READY   UP-TO-DATE   AVAILABLE   AGE
+venapi-deployment   3/3     3            3           117s
+```
+```bash
+~/managed-k8s-cluster# kubectl describe deployments venapi-deployment -n venapi
+```
+```console
+Name:                   venapi-deployment
+Namespace:              venapi
+CreationTimestamp:      Sun, 05 Jul 2020 10:51:25 +0000
+Labels:                 <none>
+Annotations:            deployment.kubernetes.io/revision: 2
+                        kubectl.kubernetes.io/last-applied-configuration:
+                          {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"venapi-deployment","namespace":"venapi"},"spec":{"replica...
+Selector:               app=venapi
+Replicas:               3 desired | 3 updated | 3 total | 3 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  0 max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=venapi
+  Containers:
+   nginx:
+    Image:      nginx:latest
+    Port:       80/TCP
+    Host Port:  0/TCP
+    Limits:
+      cpu:     300m
+      memory:  100Mi
+    Requests:
+      cpu:        300m
+      memory:     100Mi
+    Environment:  <none>
+    Mounts:       <none>
+  Volumes:        <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   venapi-deployment-9dc68ccb4 (3/3 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  2m57s  deployment-controller  Scaled up replica set venapi-deployment-66b897f44 to 3
+```
+```bash
+> ~/managed-k8s-cluster# kubectl get pods -n venapi
+```
+```console
+NAME                                READY   STATUS    RESTARTS   AGE
+venapi-deployment-9dc68ccb4-l5tmf   1/1     Running   0          22s
+venapi-deployment-9dc68ccb4-rmnjr   1/1     Running   0          15s
+venapi-deployment-9dc68ccb4-sjpck   1/1     Running   0          19s
+```
+```bash
+~/managed-k8s-cluster# kubectl describe pods  venapi-deployment-9dc68ccb4-l5tmf -n venapi
+```
+```console
+Name:         venapi-deployment-9dc68ccb4-l5tmf
+Namespace:    venapi
+Priority:     0
+Node:         ip-10-0-11-58.us-west-2.compute.internal/10.0.11.58
+Start Time:   Sun, 05 Jul 2020 11:03:29 +0000
+Labels:       app=venapi
+              pod-template-hash=9dc68ccb4
+Annotations:  kubernetes.io/psp: eks.privileged
+Status:       Running
+IP:           10.0.11.91
+IPs:
+  IP:           10.0.11.91
+Controlled By:  ReplicaSet/venapi-deployment-9dc68ccb4
+Containers:
+  nginx:
+    Container ID:   docker://4d17d27c760f915f44b2fdbb33a7d4ba10535722facb2fa670acf7e7ac6f3fd5
+    Image:          nginx:latest
+    Image ID:       docker-pullable://nginx@sha256:21f32f6c08406306d822a0e6e8b7dc81f53f336570e852e25fbe1e3e3d0d0133
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Sun, 05 Jul 2020 11:03:31 +0000
+    Ready:          True
+    Restart Count:  0
+    Limits:
+      cpu:     300m
+      memory:  100Mi
+    Requests:
+      cpu:        300m
+      memory:     100Mi
+    Environment:  <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-vj7qg (ro)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             True 
+  ContainersReady   True 
+  PodScheduled      True 
+Volumes:
+  default-token-vj7qg:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-vj7qg
+    Optional:    false
+QoS Class:       Guaranteed
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
+                 node.kubernetes.io/unreachable:NoExecute for 300s
+Events:
+  Type    Reason     Age   From                                               Message
+  ----    ------     ----  ----                                               -------
+  Normal  Scheduled  4m2s  default-scheduler                                  Successfully assigned venapi/venapi-deployment-9dc68ccb4-l5tmf to ip-10-0-11-58.us-west-2.compute.internal
+  Normal  Pulling    4m1s  kubelet, ip-10-0-11-58.us-west-2.compute.internal  Pulling image "nginx:latest"
+  Normal  Pulled     4m    kubelet, ip-10-0-11-58.us-west-2.compute.internal  Successfully pulled image "nginx:latest"
+  Normal  Created    4m    kubelet, ip-10-0-11-58.us-west-2.compute.internal  Created container nginx
+  Normal  Started    4m    kubelet, ip-10-0-11-58.us-west-2.compute.internal  Started container nginx
+```
