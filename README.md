@@ -632,16 +632,6 @@ wget https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controlle
 
 3. Deploy the modified alb-ingress-controller.
 ```bash
-kubectl apply -f rbac-role.yaml
-kubectl apply -f alb-ingress-controller.yaml
-```
-    The manifest above will deploy the controller to the kube-system namespace.
-
-4. Verify the deployment was successful and the controller started.
-```console
-kubectl logs -n kube-system $(kubectl get po -n kube-system | egrep -o alb-ingress[a-zA-Z0-9-]+)
-```
-```bash
 > ~/managed-k8s-cluster# kubectl apply -f rbac-role.yaml
 ```
 ```console
@@ -655,4 +645,59 @@ serviceaccount/alb-ingress-controller created
 ```console
 deployment.apps/alb-ingress-controller created
 ```
+    The manifest above will deploy the controller to the kube-system namespace.
+
+4. Verify the deployment was successful and the controller started.
+
+```bash
+> ~/managed-k8s-cluster# kubectl logs -n kube-system $(kubectl get po -n kube-system | egrep -o alb-ingress[a-zA-Z0-9-]+)
+```
+
+```console
+W0705 11:59:47.078994       1 client_config.go:549] Neither --kubeconfig nor --master was specified.  Using the inClusterConfig.  This might not work.
+-------------------------------------------------------------------------------
+AWS ALB Ingress controller
+  Release:    v1.1.6
+  Build:      git-95ee2ac8
+  Repository: https://github.com/kubernetes-sigs/aws-alb-ingress-controller.git
+-------------------------------------------------------------------------------
+
+I0705 11:59:50.237506       1 controller.go:121] kubebuilder/controller "level"=0 "msg"="Starting EventSource"  "controller"="alb-ingress-controller" "source"={"Type":{"metadata":{"creationTimestamp":null}}}
+I0705 11:59:50.237727       1 controller.go:121] kubebuilder/controller "level"=0 "msg"="Starting EventSource"  "controller"="alb-ingress-controller" "source"={"Type":{"metadata":{"creationTimestamp":null},"spec":{},"status":{"loadBalancer":{}}}}
+I0705 11:59:50.237789       1 controller.go:121] kubebuilder/controller "level"=0 "msg"="Starting EventSource"  "controller"="alb-ingress-controller" "source"=
+I0705 11:59:50.237943       1 controller.go:121] kubebuilder/controller "level"=0 "msg"="Starting EventSource"  "controller"="alb-ingress-controller" "source"={"Type":{"metadata":{"creationTimestamp":null},"spec":{},"status":{"loadBalancer":{}}}}
+I0705 11:59:50.237972       1 controller.go:121] kubebuilder/controller "level"=0 "msg"="Starting EventSource"  "controller"="alb-ingress-controller" "source"=
+I0705 11:59:50.238091       1 controller.go:121] kubebuilder/controller "level"=0 "msg"="Starting EventSource"  "controller"="alb-ingress-controller" "source"={"Type":{"metadata":{"creationTimestamp":null}}}
+I0705 11:59:50.238335       1 controller.go:121] kubebuilder/controller "level"=0 "msg"="Starting EventSource"  "controller"="alb-ingress-controller" "source"={"Type":{"metadata":{"creationTimestamp":null},"spec":{},"status":{"daemonEndpoints":{"kubeletEndpoint":{"Port":0}},"nodeInfo":{"machineID":"","systemUUID":"","bootID":"","kernelVersion":"","osImage":"","containerRuntimeVersion":"","kubeletVersion":"","kubeProxyVersion":"","operatingSystem":"","architecture":""}}}}
+I0705 11:59:50.241113       1 leaderelection.go:205] attempting to acquire leader lease  kube-system/ingress-controller-leader-alb...
+I0705 11:59:50.248358       1 leaderelection.go:214] successfully acquired lease kube-system/ingress-controller-leader-alb
+I0705 11:59:50.248572       1 recorder.go:53] kubebuilder/manager/events "level"=1 "msg"="Normal"  "message"="alb-ingress-controller-5595759966-pd8k7_05a2a1f9-beb7-11ea-9c10-ae0daee26ce3 became leader" "object"={"kind":"ConfigMap","namespace":"kube-system","name":"ingress-controller-leader-alb","uid":"dasdas-dsdd-dds-dsddsa-dfsertretreytr","apiVersion":"v1","resourceVersion":"18737"} "reason"="LeaderElection"
+I0705 11:59:50.348737       1 controller.go:134] kubebuilder/controller "level"=0 "msg"="Starting Controller"  "controller"="alb-ingress-controller"
+I0705 11:59:50.448899       1 controller.go:154] kubebuilder/controller "level"=0 "msg"="Starting workers"  "controller"="alb-ingress-controller" "worker count"=1
+I0705 11:59:50.627443       1 security_group.go:36] venapi/venapi-ingress: creating securityGroup dssasads-venapi-venapiingr-f14a:managed LoadBalancer securityGroup by ALB Ingress Controller
+I0705 11:59:50.747522       1 tags.go:69] venapi/venapi-ingress: modifying tags {  kubernetes.io/ingress-name: "venapi-ingress",  ingress.k8s.aws/cluster: "managed-k8s-cluster",  ingress.k8s.aws/stack: "venapi/venapi-ingress",  ingress.k8s.aws/resource: "ManagedLBSecurityGroup",  Environment: "prod",  kubernetes.io/cluster-name: "managed-k8s-cluster",  kubernetes.io/namespace: "venapi"} on sg-12463234435365465
+I0705 11:59:50.859761       1 security_group.go:75] venapi/venapi-ingress: granting inbound permissions to securityGroup sg-12463234435365465: [{    FromPort: 80,    IpProtocol: "tcp",    IpRanges: [{        CidrIp: "0.0.0.0/0",        Description: "Allow ingress on port 80 from 0.0.0.0/0"      }],    ToPort: 80  },{    FromPort: 443,    IpProtocol: "tcp",    IpRanges: [{        CidrIp: "0.0.0.0/0",        Description: "Allow ingress on port 443 from 0.0.0.0/0"      }],    ToPort: 443  }]
+I0705 11:59:51.019591       1 loadbalancer.go:203] venapi/venapi-ingress: creating LoadBalancer dssasads-venapi-venapiingr-f14a
+I0705 11:59:51.593222       1 loadbalancer.go:220] venapi/venapi-ingress: LoadBalancer dssasads-venapi-venapiingr-f14a created, ARN: arn:aws:elasticloadbalancing:us-west-2:1234567890:loadbalancer/app/dssasads-venapi-venapiingr-f14a/f5db23eec2362133
+I0705 11:59:51.593379       1 recorder.go:53] kubebuilder/manager/events "level"=1 "msg"="Normal"  "message"="LoadBalancer dssasads-venapi-venapiingr-f14a created, ARN: arn:aws:elasticloadbalancing:us-west-2:1234567890:loadbalancer/app/dssasads-venapi-venapiingr-f14a/f5db23eec2362133" "object"={"kind":"Ingress","namespace":"venapi","name":"venapi-ingress","uid":"22121324334-423443-34243-234234-23423423","apiVersion":"extensions/v1beta1","resourceVersion":"16038"} "reason"="CREATE"
+I0705 11:59:52.745542       1 targetgroup.go:126] venapi/venapi-ingress: creating target group dssasads-sadasdartrytyrtyryuu
+I0705 11:59:52.902578       1 targetgroup.go:145] venapi/venapi-ingress: target group dssasads-sadasdartrytyrtyryuu created: arn:aws:elasticloadbalancing:us-west-2:1234567890:targetgroup/dssasads-sadasdartrytyrtyryuu/ffbb8c71a86dc9a3
+I0705 11:59:52.918437       1 tags.go:43] venapi/venapi-ingress: modifying tags {  ingress.k8s.aws/cluster: "managed-k8s-cluster",  kubernetes.io/cluster/managed-k8s-cluster: "owned",  Environment: "prod",  kubernetes.io/ingress-name: "venapi-ingress",  ingress.k8s.aws/resource: "venapi/venapi-ingress-venapi-service:80",  ingress.k8s.aws/stack: "venapi/venapi-ingress",  kubernetes.io/namespace: "venapi",  kubernetes.io/service-name: "venapi-service",  kubernetes.io/service-port: "80"} on arn:aws:elasticloadbalancing:us-west-2:1234567890:targetgroup/dssasads-sadasdartrytyrtyryuu/ffbb8c71a86dc9a3
+I0705 11:59:53.019053       1 targets.go:93] venapi/venapi-ingress: Adding targets to arn:aws:elasticloadbalancing:us-west-2:1234567890:targetgroup/dssasads-sadasdartrytyrtyryuu/ffbb8c71a86dc9a3: 10.0.11.143:80, 10.0.11.91:80, 10.0.12.5:80
+I0705 11:59:53.271512       1 listener.go:110] venapi/venapi-ingress: creating listener 80
+E0705 11:59:53.311961       1 controller.go:217] kubebuilder/controller "msg"="Reconciler error" "error"="failed to reconcile listeners due to failed to reconcile rules due to ListenerNotFound: One or more listeners not found\n\tstatus code: 400, request id: 8d92bfe6-6b7c-459e-acce-f33470432420"  "controller"="alb-ingress-controller" "request"={"Namespace":"venapi","Name":"venapi-ingress"}
+I0705 11:59:54.651924       1 rules.go:62] venapi/venapi-ingress: creating rule 1 on arn:aws:elasticloadbalancing:us-west-2:1234567890:listener/app/dssasads-venapi-venapiingr-f14a/f5db23eec2362133/c8a2b8d1862e7f13
+I0705 11:59:54.685401       1 rules.go:79] venapi/venapi-ingress: rule 1 created with conditions [{    Field: "host-header",    HostHeaderConfig: {      Values: ["venapi.example.com"]    }  },{    Field: "path-pattern",    PathPatternConfig: {      Values: ["/*"]    }  }]
+I0705 11:59:54.685451       1 listener.go:110] venapi/venapi-ingress: creating listener 443
+I0705 11:59:54.685672       1 recorder.go:53] kubebuilder/manager/events "level"=1 "msg"="Normal"  "message"="rule 1 created with conditions [{    Field: \"host-header\",    HostHeaderConfig: {      Values: [\"venapi.example.com\"]    }  },{    Field: \"path-pattern\",    PathPatternConfig: {      Values: [\"/*\"]    }  }]" "object"={"kind":"Ingress","namespace":"venapi","name":"venapi-ingress","uid":"22121324334-423443-34243-234234-23423423","apiVersion":"extensions/v1beta1","resourceVersion":"16038"} "reason"="CREATE"
+I0705 11:59:55.021727       1 rules.go:62] venapi/venapi-ingress: creating rule 1 on arn:aws:elasticloadbalancing:us-west-2:1234567890:listener/app/dssasads-venapi-venapiingr-f14a/f5db23eec2362133/b7e3279371d2cad7
+I0705 11:59:55.059273       1 rules.go:79] venapi/venapi-ingress: rule 1 created with conditions [{    Field: "host-header",    HostHeaderConfig: {      Values: ["venapi.example.com"]    }  },{    Field: "path-pattern",    PathPatternConfig: {      Values: ["/*"]    }  }]
+I0705 11:59:55.059406       1 recorder.go:53] kubebuilder/manager/events "level"=1 "msg"="Normal"  "message"="rule 1 created with conditions [{    Field: \"host-header\",    HostHeaderConfig: {      Values: [\"venapi.example.com\"]    }  },{    Field: \"path-pattern\",    PathPatternConfig: {      Values: [\"/*\"]    }  }]" "object"={"kind":"Ingress","namespace":"venapi","name":"venapi-ingress","uid":"22121324334-423443-34243-234234-23423423","apiVersion":"extensions/v1beta1","resourceVersion":"16038"} "reason"="CREATE"
+I0705 11:59:55.614451       1 instance_attachment_v2.go:192] venapi/venapi-ingress: granting inbound permissions to securityGroup sg-sdsdfsdfq34344: [{    FromPort: 0,    IpProtocol: "tcp",    ToPort: 65535,    UserIdGroupPairs: [{        GroupId: "sg-12463234435365465"      }]  }]
+I0705 11:59:55.792098       1 controller.go:236] kubebuilder/controller "level"=1 "msg"="Successfully Reconciled"  "controller"="alb-ingress-controller" "request"={"Namespace":"venapi","Name":"venapi-ingress"}
+I0705 11:59:56.630485       1 controller.go:236] kubebuilder/controller "level"=1 "msg"="Successfully Reconciled"  "controller"="alb-ingress-controller" "request"={"Namespace":"venapi","Name":"venapi-ingress"}
+
+
+```
+
 
