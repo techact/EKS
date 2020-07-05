@@ -248,6 +248,7 @@ kube-public       Active   79m
 kube-system       Active   79m
 ```
 ```console
+> cd managed-k8s-cluster/
 > cat venapi-namespace.yaml
 ```
 ```yaml
@@ -263,11 +264,30 @@ kubectl apply -f venapi-namespace.yaml
 namespace/venapi created
 ```
 ```console
-root@ip-10-0-1-37:~/managed-k8s-cluster# kubectl get namespaces
+> ~/managed-k8s-cluster# kubectl get namespaces
 NAME              STATUS   AGE
 default           Active   83m
 kube-node-lease   Active   83m
 kube-public       Active   83m
 kube-system       Active   83m
 venapi            Active   5s
+```
+
+```bash
+> ~/managed-k8s-cluster# cat venapi-service.yaml
+```
 ```console
+apiVersion: v1
+kind: Service
+metadata:
+  name: venapi-service
+  namespace: venapi
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  type: NodePort
+  selector:
+    app: venapi
+```
