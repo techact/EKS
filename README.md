@@ -533,3 +533,113 @@ Commercial support is available at
 </body>
 </html>
 ```
+
+It works with in the cluster itself.
+
+But our application needs to accessible through internet. So we need to setup ingress controller.
+
+```bash
+> ~/managed-k8s-cluster# cat venapi-ingress.yaml
+```
+```console
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: venapi-ingress
+  namespace: venapi
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-2:1234567890:certificate/12121221-12121212-1212121212-121-121212
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/subnets: subnet-123456,subnet-56789
+    alb.ingress.kubernetes.io/tags: Environment=prod
+spec:
+  rules:
+    - host: venapi.example.com
+      http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: venapi-service
+              servicePort: 80
+```
+```bash
+> ~/managed-k8s-cluster# kubectl apply -f venapi-ingress.yaml 
+```
+```console
+ingress.extensions/venapi-ingress created
+```
+```bash
+~/managed-k8s-cluster# kubectl get ingress -n venapi
+```
+```console
+NAME             HOSTS                    ADDRESS    PORTS   AGE
+venapi-ingress   venapi.example.com                  80      3m31s
+```
+```bash
+~/managed-k8s-cluster# kubectl describe ingress venapi-ingress -n venapi
+```
+```console
+Name:             venapi-ingress
+Namespace:        venapi
+Address:          
+Default backend:  default-http-backend:80 (<none>)
+Rules:
+  Host                    Path  Backends
+  ----                    ----  --------
+  venapi.example.com  
+                          /*   venapi-service:80 (10.0.11.143:80,10.0.11.91:80,10.0.12.5:80)
+Annotations:
+  alb.ingress.kubernetes.io/listen-ports:            [{"HTTP": 80}, {"HTTPS":443}]
+  alb.ingress.kubernetes.io/scheme:                  internet-facing
+  alb.ingress.kubernetes.io/subnets:                 subnet-123456,subnet-56789
+  alb.ingress.kubernetes.io/tags:                    Environment=prod
+  alb.ingress.kubernetes.io/target-type:             ip
+  kubectl.kubernetes.io/last-applied-configuration:  {"apiVersion":"extensions/v1beta1","kind":"Ingress","metadata":{"annotations":{"alb.ingress.kubernetes.io/certificate-arn":"arn:aws:acm:us-west-2:1234567890:certificate/12121221-12121212-1212121212-121-121212","alb.ingress.kubernetes.io/listen-ports":"[{\"HTTP\": 80}, {\"HTTPS\":443}]","alb.ingress.kubernetes.io/scheme":"internet-facing","alb.ingress.kubernetes.io/subnets":"subnet-123456,subnet-56789","alb.ingress.kubernetes.io/tags":"Environment=prod","alb.ingress.kubernetes.io/target-type":"ip","kubernetes.io/ingress.class":"alb"},"name":"venapi-ingress","namespace":"venapi"},"spec":{"rules":[{"host":"venapi.example.com","http":{"paths":[{"backend":{"serviceName":"venapi-service","servicePort":80},"path":"/*"}]}}]}}
+
+  kubernetes.io/ingress.class:                alb
+  alb.ingress.kubernetes.io/certificate-arn:  arn:aws:acm:us-west-2:1234567890:certificate/12121221-12121212-1212121212-121-121212
+Events:                                       <none>
+```
+
+We have configured ALB, but loadbalancer is not generated. We need to follow the below steps to create ALB.
+
+Reference: [Deploy the ALB ingress controller](https://kubernetes-sigs.github.io/aws-alb-ingress-controller/guide/walkthrough/echoserver/)
+
+##### Deploy the ALB ingress controller¶
+
+1. Download the example alb-ingress-manifest locally.
+```bash 
+wget https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.6/docs/examples/alb-ingress-controller.yaml
+wget https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.6/docs/examples/rbac-role.yaml
+```
+2. Edit the manifest and set the following parameters and environment variables.
+
+    * `cluster-name`: name of the cluster.
+
+    `AWS_ACCESS_KEY_ID`: access key id that alb controller can use to communicate with AWS. This is only used for convenience of this example. It will keep the credentials in plain text within this manifest. It's recommended a project such as kube2iam is used to resolve access. You will need to uncomment this from the manifest.
+
+- name: AWS_ACCESS_KEY_ID
+  value: KEYVALUE
+
+`AWS_SECRET_ACCESS_KEY`: secret access key that alb controller can use to communicate with AWS. This is only used for convenience of this example. It will keep the credentials in plain text within this manifest. It's recommended a project such as kube2iam is used to resolve access. You will need to uncomment this from the manifest.
+
+    - name: AWS_SECRET_ACCESS_KEY
+      value: SECRETVALUE
+
+3. Deploy the modified alb-ingress-controller.
+```bash
+kubectl apply -f rbac-role.yaml
+kubectl apply -f alb-ingress-controller.yaml
+```
+    The manifest above will deploy the controller to the kube-system namespace.
+
+4. Verify the deployment was successful and the controller started.
+```console
+kubectl logs -n kube-system $(kubectl get po -n kube-system | egrep -o alb-ingress[a-zA-Z0-9-]+)
+```
+
+
