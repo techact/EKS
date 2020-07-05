@@ -224,8 +224,19 @@ kubectl config get-contexts
 CURRENT   NAME                                                        CLUSTER                                   AUTHINFO                                                    NAMESPACE
 *         deployment-server@managed-k8s-cluster.us-west-2.eksctl.io   managed-k8s-cluster.us-west-2.eksctl.io   deployment-server@managed-k8s-cluster.us-west-2.eksctl.io   
 ```
-
-> cat namespace.yaml
+```console
+> kubectl get namespaces
+```
+```console
+NAME              STATUS   AGE
+default           Active   79m
+kube-node-lease   Active   79m
+kube-public       Active   79m
+kube-system       Active   79m
+```
+```console
+> cat venapi-namespace.yaml
+```
 ```yaml
 apiVersion: v1
 kind: Namespace
