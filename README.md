@@ -48,7 +48,7 @@ metadata:
   name: managed-cluster
   region: us-west-2
 vpc:
-  id: "vpc-a39840c6"  # (optional, must match VPC ID used for each subnet below)
+  id: "vpc-aaa11111"  # (optional, must match VPC ID used for each subnet below)
   cidr: "10.0.0.0/16"       # (optional, must match CIDR used by the given VPC)
   subnets:
     public:
@@ -81,4 +81,26 @@ managedNodeGroups:
         externalDNS: true
         certManager: true
         albIngress: true
+```
+```console
+ eksctl create cluster -f api_cluster_config.yaml
+ ```
+```console
+[ℹ]  eksctl version 0.23.0
+[ℹ]  using region us-west-2
+[✔]  using existing VPC (vpc-aaa11111) and subnets (private:[subnet-913232 subnet-2423565] public:[subnet-123456 subnet-56789])
+[!]  custom VPC/subnets will be used; if resulting cluster doesn't function as expected, make sure to review the configuration of VPC/subnets
+[ℹ]  using EC2 key pair "ec2_private_key"
+[ℹ]  using Kubernetes version 1.16
+[ℹ]  creating EKS cluster "managed-k8s-cluster" in "us-west-2" region with managed nodes
+[ℹ]  1 nodegroup (managed-ng-1) was included (based on the include/exclude rules)
+[ℹ]  will create a CloudFormation stack for cluster itself and 0 nodegroup stack(s)
+[ℹ]  will create a CloudFormation stack for cluster itself and 1 managed nodegroup stack(s)
+[ℹ]  if you encounter any issues, check CloudFormation console or try 'eksctl utils describe-stacks --region=us-west-2 --cluster=managed-k8s-cluster'
+[ℹ]  CloudWatch logging will not be enabled for cluster "managed-k8s-cluster" in "us-west-2"
+[ℹ]  you can enable it with 'eksctl utils update-cluster-logging --region=us-west-2 --cluster=managed-k8s-cluster'
+[ℹ]  Kubernetes API endpoint access will use default of {publicAccess=true, privateAccess=false} for cluster "managed-k8s-cluster" in "us-west-2"
+[ℹ]  2 sequential tasks: { create cluster control plane "managed-k8s-cluster", 2 sequential sub-tasks: { no tasks, create managed nodegroup "managed-ng-1" } }
+[ℹ]  building cluster stack "eksctl-managed-k8s-cluster-cluster"
+[ℹ]  deploying stack "eksctl-managed-k8s-cluster-cluster"
 ```
