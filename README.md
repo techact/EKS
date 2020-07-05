@@ -335,7 +335,7 @@ Events:                   <none>
 ```bash
 > ~/managed-k8s-cluster# cat venapi-deployment.yaml
 ```
-```console
+```yaml
 ---
 apiVersion: apps/v1
 kind: Deployment
