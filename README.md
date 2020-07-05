@@ -40,8 +40,13 @@ kubectl version --short --client
 # Project tree
 ```bash
 managed-k8s-cluster/
+├── alb-ingress-controller.yaml
 ├── cluster_config.yaml
-└── venapi-namespace.yaml
+├── rbac-role.yaml
+├── venapi-deployment.yaml
+├── venapi-ingress.yaml
+├── venapi-namespace.yaml
+└── venapi-service.yaml
 ```
 
 ##### Cluster Config:
