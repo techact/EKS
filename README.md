@@ -83,7 +83,7 @@ managedNodeGroups:
         albIngress: true
 ```
 ```console
- eksctl create cluster -f api_cluster_config.yaml
+> eksctl create cluster -f api_cluster_config.yaml
  ```
 ```console
 [ℹ]  eksctl version 0.23.0
@@ -103,4 +103,34 @@ managedNodeGroups:
 [ℹ]  2 sequential tasks: { create cluster control plane "managed-k8s-cluster", 2 sequential sub-tasks: { no tasks, create managed nodegroup "managed-ng-1" } }
 [ℹ]  building cluster stack "eksctl-managed-k8s-cluster-cluster"
 [ℹ]  deploying stack "eksctl-managed-k8s-cluster-cluster"
+[ℹ]  building managed nodegroup stack "eksctl-managed-k8s-cluster-nodegroup-managed-ng-1"
+[ℹ]  deploying stack "eksctl-managed-k8s-cluster-nodegroup-managed-ng-1"
+[ℹ]  waiting for the control plane availability...
+[✔]  saved kubeconfig as "/home/ubuntu/.kube/config"
+[ℹ]  no tasks
+[✔]  all EKS cluster resources for "managed-k8s-cluster" have been created
+[ℹ]  nodegroup "managed-ng-1" has 2 node(s)
+[ℹ]  node "ip-10-0-11-58.us-west-2.compute.internal" is ready
+[ℹ]  node "ip-10-0-12-202.us-west-2.compute.internal" is ready
+[ℹ]  waiting for at least 2 node(s) to become ready in "managed-ng-1"
+[ℹ]  nodegroup "managed-ng-1" has 2 node(s)
+[ℹ]  node "ip-10-0-11-58.us-west-2.compute.internal" is ready
+[ℹ]  node "ip-10-0-12-202.us-west-2.compute.internal" is ready
+[ℹ]  kubectl command should work with "/home/ubuntu/.kube/config", try 'kubectl get nodes'
+[✔]  EKS cluster "managed-k8s-cluster" in "us-west-2" region is ready
+```
+```console
+> eksctl get cluster --name=managed-k8s-cluster
+```
+```console
+NAME			VERSION	STATUS	CREATED			VPC		SUBNETS								SECURITYGROUPS
+managed-k8s-cluster	1.16	ACTIVE	2020-07-05T08:45:51Z	vpc-aaa11111	subnet-913232,subnet-2423565,subnet-123456,subnet-56789	sg-231321323234343434
+```
+
+> cat namespace.yaml
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: venapi
 ```
