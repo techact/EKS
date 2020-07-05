@@ -641,5 +641,18 @@ kubectl apply -f alb-ingress-controller.yaml
 ```console
 kubectl logs -n kube-system $(kubectl get po -n kube-system | egrep -o alb-ingress[a-zA-Z0-9-]+)
 ```
-
+```bash
+> ~/managed-k8s-cluster# kubectl apply -f rbac-role.yaml
+```
+```console
+clusterrole.rbac.authorization.k8s.io/alb-ingress-controller created
+clusterrolebinding.rbac.authorization.k8s.io/alb-ingress-controller created
+serviceaccount/alb-ingress-controller created
+```
+```bash
+> ~/managed-k8s-cluster# kubectl apply -f alb-ingress-controller.yaml
+```
+```console
+deployment.apps/alb-ingress-controller created
+```
 
