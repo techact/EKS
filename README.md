@@ -283,7 +283,7 @@ venapi            Active   5s
 ```bash
 > ~/managed-k8s-cluster# cat venapi-service.yaml
 ```
-```console
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
