@@ -696,8 +696,13 @@ I0705 11:59:55.059406       1 recorder.go:53] kubebuilder/manager/events "level"
 I0705 11:59:55.614451       1 instance_attachment_v2.go:192] venapi/venapi-ingress: granting inbound permissions to securityGroup sg-sdsdfsdfq34344: [{    FromPort: 0,    IpProtocol: "tcp",    ToPort: 65535,    UserIdGroupPairs: [{        GroupId: "sg-12463234435365465"      }]  }]
 I0705 11:59:55.792098       1 controller.go:236] kubebuilder/controller "level"=1 "msg"="Successfully Reconciled"  "controller"="alb-ingress-controller" "request"={"Namespace":"venapi","Name":"venapi-ingress"}
 I0705 11:59:56.630485       1 controller.go:236] kubebuilder/controller "level"=1 "msg"="Successfully Reconciled"  "controller"="alb-ingress-controller" "request"={"Namespace":"venapi","Name":"venapi-ingress"}
-
-
+```
+```bash
+> ~/managed-k8s-cluster# kubectl get ingress -n venapi
+```
+```console
+NAME             HOSTS                    ADDRESS                                                                  PORTS   AGE
+venapi-ingress   venapi.example.com   2442-venapi-venapiingr-3fgff4234-424gdgtyfgggg.us-west-2.elb.amazonaws.com   80      31m
 ```
 
 
