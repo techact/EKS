@@ -122,25 +122,31 @@ managedNodeGroups:
 ```console
 > eksctl get cluster --name=managed-k8s-cluster
 ```
+
 ```console
 NAME			VERSION	STATUS	CREATED			VPC		SUBNETS								SECURITYGROUPS
 managed-k8s-cluster	1.16	ACTIVE	2020-07-05T08:45:51Z	vpc-aaa11111	subnet-913232,subnet-2423565,subnet-123456,subnet-56789	sg-231321323234343434
 ```
+
 ```console
  > kubectl get nodes
  ```
+ 
  ```console
 NAME                                        STATUS   ROLES    AGE     VERSION
 ip-10-0-11-58.us-west-2.compute.internal    Ready    <none>   7m40s   v1.16.8-eks-fd1ea7
 ip-10-0-12-202.us-west-2.compute.internal   Ready    <none>   7m38s   v1.16.8-eks-fd1ea7
 ```
+
 ```console
 > kubectl get svc
 ```
+
 ```console
 NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
 kubernetes   ClusterIP   172.20.0.1   <none>        443/TCP   13m
 ```
+
 ```console
 > kubectl get all --all-namespaces
 ```
