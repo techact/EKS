@@ -144,6 +144,13 @@ NAME                                        STATUS   ROLES    AGE     VERSION
 ip-10-0-11-58.us-west-2.compute.internal    Ready    <none>   7m40s   v1.16.8-eks-fd1ea7
 ip-10-0-12-202.us-west-2.compute.internal   Ready    <none>   7m38s   v1.16.8-eks-fd1ea7
 ```
+```bash
+> kubectl cluster-info
+Kubernetes master is running at https://fjlskfjklsjff.sdfsd.us-west-2.eks.amazonaws.com
+CoreDNS is running at https://fjlskfjklsjff.sdfsd.us-west-2.eks.amazonaws.com/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+```
 
 ```console
 > kubectl get svc
@@ -290,4 +297,38 @@ spec:
   type: NodePort
   selector:
     app: venapi
+```
+```bash
+> ~/managed-k8s-cluster# kubectl apply -f venapi-service.yaml
+```
+```console
+service/venapi-service created
+```
+```bash
+> ~/managed-k8s-cluster# kubectl get services
+```
+```console
+> ~/managed-k8s-cluster# kubectl get services -n venapi
+NAME             TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+venapi-service   NodePort   172.20.1.237   <none>        80:31474/TCP   17s
+```
+```bash
+~/managed-k8s-cluster# kubectl describe service venapi-service -n venapi
+```
+```console
+Name:                     venapi-service
+Namespace:                venapi
+Labels:                   <none>
+Annotations:              kubectl.kubernetes.io/last-applied-configuration:
+                            {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"venapi-service","namespace":"venapi"},"spec":{"ports":[{"port":80...
+Selector:                 app=venapi
+Type:                     NodePort
+IP:                       172.20.1.237
+Port:                     <unset>  80/TCP
+TargetPort:               80/TCP
+NodePort:                 <unset>  31474/TCP
+Endpoints:                <none>
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:                   <none>
 ```
