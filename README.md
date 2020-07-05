@@ -126,6 +126,104 @@ managedNodeGroups:
 NAME			VERSION	STATUS	CREATED			VPC		SUBNETS								SECURITYGROUPS
 managed-k8s-cluster	1.16	ACTIVE	2020-07-05T08:45:51Z	vpc-aaa11111	subnet-913232,subnet-2423565,subnet-123456,subnet-56789	sg-231321323234343434
 ```
+```console
+ > kubectl get nodes
+ ```
+ ```console
+NAME                                        STATUS   ROLES    AGE     VERSION
+ip-10-0-11-58.us-west-2.compute.internal    Ready    <none>   7m40s   v1.16.8-eks-fd1ea7
+ip-10-0-12-202.us-west-2.compute.internal   Ready    <none>   7m38s   v1.16.8-eks-fd1ea7
+```
+```console
+> kubectl get svc
+```
+```console
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   172.20.0.1   <none>        443/TCP   13m
+```
+```console
+> kubectl get all --all-namespaces
+```
+```console
+NAMESPACE     NAME                           READY   STATUS    RESTARTS   AGE
+kube-system   pod/aws-node-khmg2             1/1     Running   0          61m
+kube-system   pod/aws-node-x6nm6             1/1     Running   0          61m
+kube-system   pod/coredns-5c97f79574-5nl4m   1/1     Running   0          66m
+kube-system   pod/coredns-5c97f79574-5wh88   1/1     Running   0          66m
+kube-system   pod/kube-proxy-mxhqn           1/1     Running   0          61m
+kube-system   pod/kube-proxy-t4klr           1/1     Running   0          61m
+
+NAMESPACE     NAME                 TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)         AGE
+default       service/kubernetes   ClusterIP   172.20.0.1    <none>        443/TCP         66m
+kube-system   service/kube-dns     ClusterIP   172.20.0.10   <none>        53/UDP,53/TCP   66m
+
+NAMESPACE     NAME                        DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+kube-system   daemonset.apps/aws-node     2         2         2       2            2           <none>          66m
+kube-system   daemonset.apps/kube-proxy   2         2         2       2            2           <none>          66m
+
+NAMESPACE     NAME                      READY   UP-TO-DATE   AVAILABLE   AGE
+kube-system   deployment.apps/coredns   2/2     2            2           66m
+
+NAMESPACE     NAME                                 DESIRED   CURRENT   READY   AGE
+kube-system   replicaset.apps/coredns-5c97f79574   2         2         2       66m
+
+```
+```console
+> kubectl config view
+```
+```console
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: DATA+OMITTED
+    server: https://12234452234dfsfgdfgdfdg12233.gr7.us-west-2.eks.amazonaws.com
+  name: managed-k8s-cluster.us-west-2.eksctl.io
+contexts:
+- context:
+    cluster: managed-k8s-cluster.us-west-2.eksctl.io
+    user: deployment-server@managed-k8s-cluster.us-west-2.eksctl.io
+  name: deployment-server@managed-k8s-cluster.us-west-2.eksctl.io
+current-context: deployment-server@managed-k8s-cluster.us-west-2.eksctl.io
+kind: Config
+preferences: {}
+users:
+- name: deployment-server@managed-k8s-cluster.us-west-2.eksctl.io
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1alpha1
+      args:
+      - eks
+      - get-token
+      - --cluster-name
+      - managed-k8s-cluster
+      - --region
+      - us-west-2
+      command: aws
+      env:
+      - name: AWS_STS_REGIONAL_ENDPOINTS
+        value: regional
+```
+```console
+> eksctl get nodegroup --cluster=managed-k8s-cluster
+```
+```console
+CLUSTER			NODEGROUP	CREATED			MIN SIZE	MAX SIZE	DESIRED CAPACITY	INSTANCE TYPE	IMAGE ID
+managed-k8s-cluster	managed-ng-1	2020-07-05T08:56:54Z	2		5		2			c5.large	
+```
+```console
+> eksctl get nodegroup --cluster=managed-k8s-cluster --name=managed-ng-1
+```
+```console
+CLUSTER			NODEGROUP	CREATED			MIN SIZE	MAX SIZE	DESIRED CAPACITY	INSTANCE TYPE	IMAGE ID
+managed-k8s-cluster	managed-ng-1	2020-07-05T08:56:54Z	2		5		2			c5.large	
+```
+```console
+kubectl config get-contexts
+```
+```console
+CURRENT   NAME                                                        CLUSTER                                   AUTHINFO                                                    NAMESPACE
+*         deployment-server@managed-k8s-cluster.us-west-2.eksctl.io   managed-k8s-cluster.us-west-2.eksctl.io   deployment-server@managed-k8s-cluster.us-west-2.eksctl.io   
+```
 
 > cat namespace.yaml
 ```yaml
