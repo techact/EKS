@@ -9,6 +9,7 @@ How does EKS work:
   - [Install AWSCLI](#install-awscli)
   - [Install eksctl](#install-eksctl)
   - [Install kubectl](#install-kubectl)
+
 ### Install AWSCLI
 ``` sh
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -16,6 +17,7 @@ unzip awscliv2.zip
 sudo ./aws/install
 aws --version
 ```
+[AWSCLI Installation reference](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html)
 ### Install eksctl
 ```sh
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
