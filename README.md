@@ -37,6 +37,13 @@ kubectl version --short --client
 
 ##### eksctl cluster setup
 
+# Project tree
+```bash
+managed-k8s-cluster/
+├── cluster_config.yaml
+└── venapi-namespace.yaml
+```
+
 ##### Cluster Config:
 ```yaml
 # cluster.yaml
@@ -249,3 +256,18 @@ kind: Namespace
 metadata:
   name: venapi
 ```
+```console
+kubectl apply -f venapi-namespace.yaml 
+```
+```console
+namespace/venapi created
+```
+```console
+root@ip-10-0-1-37:~/managed-k8s-cluster# kubectl get namespaces
+NAME              STATUS   AGE
+default           Active   83m
+kube-node-lease   Active   83m
+kube-public       Active   83m
+kube-system       Active   83m
+venapi            Active   5s
+```console
