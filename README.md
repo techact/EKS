@@ -618,14 +618,14 @@ wget https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controlle
 ```
 2. Edit the manifest and set the following parameters and environment variables.
 
--`cluster-name`: name of the cluster.
+* cluster-name`: name of the cluster.
 
-`AWS_ACCESS_KEY_ID`: access key id that alb controller can use to communicate with AWS. This is only used for convenience of this example. It will keep the credentials in plain text within this manifest. It's recommended a project such as kube2iam is used to resolve access. You will need to uncomment this from the manifest.
+* `AWS_ACCESS_KEY_ID`: access key id that alb controller can use to communicate with AWS. This is only used for convenience of this example. It will keep the credentials in plain text within this manifest. It's recommended a project such as kube2iam is used to resolve access. You will need to uncomment this from the manifest.
 
-- name: AWS_ACCESS_KEY_ID
-  value: KEYVALUE
+    - name: AWS_ACCESS_KEY_ID
+      value: KEYVALUE
 
-`AWS_SECRET_ACCESS_KEY`: secret access key that alb controller can use to communicate with AWS. This is only used for convenience of this example. It will keep the credentials in plain text within this manifest. It's recommended a project such as kube2iam is used to resolve access. You will need to uncomment this from the manifest.
+* `AWS_SECRET_ACCESS_KEY`: secret access key that alb controller can use to communicate with AWS. This is only used for convenience of this example. It will keep the credentials in plain text within this manifest. It's recommended a project such as kube2iam is used to resolve access. You will need to uncomment this from the manifest.
 
     - name: AWS_SECRET_ACCESS_KEY
       value: SECRETVALUE
