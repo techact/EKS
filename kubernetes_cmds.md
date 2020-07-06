@@ -125,3 +125,4 @@ kubectl api-resources -o wide
 ```
 |NAME  |                           SHORTNAMES | APIGROUP             |         NAMESPACED  |KIND                          |  VERBS|
 |:-----|:-------------------------------------|:---------------------|:--------------------|:----------------------------|:-------|
+|bindings                         |    |                                      |  true       |Binding                       | [create]|
