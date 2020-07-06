@@ -123,7 +123,5 @@ kubectl api-resources -o wide
 ```bash
 >123
 ```
-|NAME                              SHORTNAMES   APIGROUP                       NAMESPACED   KIND                             VERBS|
-|:--------------------------------|:----------|:-----------------------------|:----------|:--------------------------------|:-------|
-|bindings                                                                      true         Binding                          [create]|
-
+|NAME  |                           SHORTNAMES | APIGROUP             |         NAMESPACED  |KIND                          |  VERBS|
+|:-----|:-------------------------------------|:---------------------|:--------------------|:----------------------------|:-------|
