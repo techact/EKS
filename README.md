@@ -21,7 +21,45 @@ How does EKS work:
   - [Load Test](#load-test)
   - [Monitoring with Prometheus](#monitoring-with-prometheus)
   - [Dashboard - Grafana](#dashboard-grafana)
+  
+##### CMD's Used:
 
+
+```bash
+eksctl create cluster -f api_cluster_config.yaml
+eksctl get cluster --name=managed-k8s-cluster
+kubectl get nodes
+kubectl cluster-info
+kubectl get svc
+kubectl get all --all-namespaces
+kubectl config view
+eksctl get nodegroup --cluster=managed-k8s-cluster
+eksctl get nodegroup --cluster=managed-k8s-cluster --name=managed-ng-1
+kubectl config get-contexts
+kubectl get namespaces
+kubectl apply -f venapi-namespace.yaml 
+kubectl get namespaces
+kubectl apply -f venapi-service.yaml
+kubectl get services
+kubectl get services -n venapi
+kubectl describe service venapi-service -n venapi
+kubectl apply -f venapi-deployment.yaml 
+kubectl get deployments -n venapi
+kubectl describe deployments venapi-deployment -n venapi
+kubectl get pods -n venapi
+kubectl describe pods  venapi-deployment-9dc68ccb4-l5tmf -n venapi
+curl http://172.20.1.237
+kubectl apply -f venapi-ingress.yaml 
+kubectl get ingress -n venapi
+kubectl describe ingress venapi-ingress -n venapi
+kubectl apply -f rbac-role.yaml
+kubectl apply -f alb-ingress-controller.yaml
+kubectl logs -n kube-system $(kubectl get po -n kube-system | egrep -o alb-ingress[a-zA-Z0-9-]+)
+kubectl get ingress -n venapi
+kubectl get pods -n venapi
+kubectl logs -f venapi-deployment-9dc68ccb4-l5tmf -n venapi
+kubectl logs -f deployment/venapi-deployment --all-containers=true -n venapi
+```
 ### Install AWSCLI
 ``` sh
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
