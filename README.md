@@ -15,7 +15,7 @@ How does EKS work:
   - [Namespace](#namespace)
   - [Service](#Service)
   - [Deployment](#deployment)
-  - [ALB - Ingress](#alb-ingress)
+  - [ALB-Ingress](#alb-ingress)
   - [Cluster Autoscaling](#cluster-autoscaling)
   - [Horizontal Pod Autoscaling](#horizontal-pod-autoscaling)
   - [Load Test](#load-test)
@@ -283,7 +283,7 @@ metadata:
   name: venapi
 ```
 ```console
-kubectl apply -f venapi-namespace.yaml 
+> ~/managed-k8s-cluster# kubectl apply -f venapi-namespace.yaml 
 ```
 ```console
 namespace/venapi created
@@ -558,7 +558,7 @@ It works with in the cluster itself.
 
 But our application needs to accessible through internet. So we need to setup ingress controller.
 
-### ALB - Ingress
+### ALB-Ingress
 
 ```bash
 > ~/managed-k8s-cluster# cat venapi-ingress.yaml
