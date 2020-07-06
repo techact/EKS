@@ -3,12 +3,24 @@ AWS EKS is a managed Kubernetes service.
 How does EKS work:
 
 ![EKS](https://docs.aws.amazon.com/eks/latest/userguide/images/what-is-eks.png)
-### Overview
 ##### Installation:
+
 ###### Prerequest:
   - [Install AWSCLI](#install-awscli)
   - [Install eksctl](#install-eksctl)
   - [Install kubectl](#install-kubectl)
+  
+###### Overview:
+  - [Cluster Creation](#cluster-creation)
+  - [Namespace](#namespace)
+  - [Service](#Service)
+  - [Deployment](#deployment)
+  - [ALB - Ingress](#alb-ingress)
+  - [Cluster Autoscaling](#cluster-autoscaling)
+  - [Horizontal Pod Autoscaling](#horizontal-pod-autoscaling)
+  - [Load Test](#load-test)
+  - [Monitoring with Prometheus](#monitoring-with-prometheus)
+  - [Dashboard - Grafana](#dashboard-grafana)
 
 ### Install AWSCLI
 ``` sh
@@ -48,7 +60,7 @@ managed-k8s-cluster/
 ├── venapi-namespace.yaml
 └── venapi-service.yaml
 ```
-
+### Cluster Creation
 ##### Cluster Config:
 ```yaml
 # cluster.yaml
@@ -249,6 +261,7 @@ kubectl config get-contexts
 CURRENT   NAME                                                        CLUSTER                                   AUTHINFO                                                    NAMESPACE
 *         deployment-server@managed-k8s-cluster.us-west-2.eksctl.io   managed-k8s-cluster.us-west-2.eksctl.io   deployment-server@managed-k8s-cluster.us-west-2.eksctl.io   
 ```
+### Namespace
 ```console
 > kubectl get namespaces
 ```
@@ -284,7 +297,7 @@ kube-public       Active   83m
 kube-system       Active   83m
 venapi            Active   5s
 ```
-
+### Service
 ```bash
 > ~/managed-k8s-cluster# cat venapi-service.yaml
 ```
@@ -337,6 +350,8 @@ Session Affinity:         None
 External Traffic Policy:  Cluster
 Events:                   <none>
 ```
+### Deployment
+
 ```bash
 > ~/managed-k8s-cluster# cat venapi-deployment.yaml
 ```
@@ -543,6 +558,8 @@ It works with in the cluster itself.
 
 But our application needs to accessible through internet. So we need to setup ingress controller.
 
+### ALB - Ingress
+
 ```bash
 > ~/managed-k8s-cluster# cat venapi-ingress.yaml
 ```
@@ -747,4 +764,8 @@ checking logs for across all pods - deployment level
 10.0.1.120 - - [05/Jul/2020:13:49:23 +0000] "GET / HTTP/1.1" 200 612 "-" "ELB-HealthChecker/2.0" "-"
 10.0.2.125 - - [05/Jul/2020:13:49:23 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:75.0) Gecko/20100101 Firefox/75.0" "106.203.56.16"
 ```
-
+### Cluster Autoscaling
+### Horizontal Pod Autoscaling
+### Load Test 
+### Monitoring with Prometheus
+### Dashboard - Grafana
