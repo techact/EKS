@@ -110,7 +110,15 @@ https://aws.amazon.com/blogs/containers/cost-optimization-for-kubernetes-on-aws/
 ```bash
 kubectl api-resources -o wide
 ```
-| suresh | 123 |
+| Plugin | README |
+| ------ | ------ |
+| Dropbox | [plugins/dropbox/README.md][PlDb] |
+| GitHub | [plugins/github/README.md][PlGh] |
+| Google Drive | [plugins/googledrive/README.md][PlGd] |
+| OneDrive | [plugins/onedrive/README.md][PlOd] |
+| Medium | [plugins/medium/README.md][PlMe] |
+| Google Analytics | [plugins/googleanalytics/README.md][PlGa] |
+
 
 ```bash
 >123
