@@ -87,9 +87,9 @@ kubectl version --short --client
 
 ##### eksctl cluster setup
 
-# Project tree
+###### Directory structure
 ```bash
-managed-k8s-cluster/
+**managed-k8s-cluster/**
 ├── alb-ingress-controller.yaml
 ├── cluster_config.yaml
 ├── rbac-role.yaml
