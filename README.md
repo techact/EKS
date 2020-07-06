@@ -22,7 +22,7 @@ How does EKS work:
   - [Monitoring with Prometheus](#monitoring-with-prometheus)
   - [Dashboard - Grafana](#dashboard-grafana)
   
-##### CMD's Used:
+###### CMD's Used:
 
 
 ```bash
@@ -60,7 +60,7 @@ kubectl get pods -n venapi
 kubectl logs -f venapi-deployment-9dc68ccb4-l5tmf -n venapi
 kubectl logs -f deployment/venapi-deployment --all-containers=true -n venapi
 ```
-### Install AWSCLI
+###### Install AWSCLI
 ``` sh
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
@@ -68,14 +68,14 @@ sudo ./aws/install
 aws --version
 ```
 [AWSCLI Installation reference](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html)
-### Install eksctl
+###### Install eksctl
 ```sh
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 sudo mv /tmp/eksctl /usr/local/bin
 eksctl version
 ```
 
-### Install kubectl
+###### Install kubectl
 ```sh
 curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.16.8/2020-04-16/bin/linux/amd64/kubectl
 chmod +x ./kubectl
@@ -85,7 +85,7 @@ kubectl version --short --client
 
 [YAML Markdown](https://gist.github.com/jonschlinkert/5170877)
 
-##### eksctl cluster setup
+###### eksctl cluster setup
 
 ###### Directory structure
 ```bash
@@ -98,8 +98,8 @@ kubectl version --short --client
 ├── venapi-namespace.yaml
 └── venapi-service.yaml
 ```
-### Cluster Creation
-##### Cluster Config:
+###### Cluster Creation
+###### Cluster Config:
 ```yaml
 # cluster.yaml
 # A cluster with an unmanaged nodegroup and two managed nodegroups.
@@ -803,6 +803,9 @@ checking logs for across all pods - deployment level
 10.0.2.125 - - [05/Jul/2020:13:49:23 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:75.0) Gecko/20100101 Firefox/75.0" "106.203.56.16"
 ```
 ### Cluster Autoscaling
+```bash
+> ~/managed-k8s-cluster# eksctl scale nodegroup --name=managed-ng-1 --cluster=managed-k8s-cluster --nodes=5 --nodes-min=2 --nodes-max=10
+```
 ### Horizontal Pod Autoscaling
 ### Load Test 
 ### Monitoring with Prometheus
