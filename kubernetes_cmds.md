@@ -110,7 +110,7 @@ https://aws.amazon.com/blogs/containers/cost-optimization-for-kubernetes-on-aws/
 ```bash
 kubectl api-resources -o wide
 ```
-|suresh|123|
+| suresh | 123 |
 
 ```bash
 >123
